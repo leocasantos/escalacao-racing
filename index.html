@@ -18,6 +18,9 @@
     --grama1: #2e7d32;
     --grama2: #348a38;
     --linha: rgba(255,255,255,.75);
+    --ouro1: #f6e3a1;
+    --ouro2: #c9a24a;
+    --ouro-texto: #3b2a07;
   }
   * { box-sizing: border-box; }
   body { margin: 0; font-family: Inter, system-ui, sans-serif; background: var(--fundo); color: var(--texto); }
@@ -49,13 +52,17 @@
     background: none; border: none; color: var(--branco); padding: 0;
   }
   .camisa {
-    width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
+    position: relative; width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center;
     font-weight: 800; font-size: 15px; color: var(--celeste-escuro);
     background: repeating-linear-gradient(90deg, var(--celeste) 0 9px, var(--branco) 9px 18px);
     border: 2px solid var(--branco); box-shadow: 0 3px 8px rgba(0,0,0,.4);
   }
+  .camisa.foto { background: linear-gradient(160deg, var(--ouro1), var(--ouro2)); border-color: var(--ouro1); }
+  .camisa.foto img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 50%; }
+  .camisa .ovr { position: absolute; right: -8px; top: -6px; background: var(--ouro-texto); color: var(--ouro1);
+                 font-size: 11px; border-radius: 6px; padding: 1px 4px; border: 1px solid var(--ouro1); }
+  .camisa:not(.foto) .ovr { position: static; background: var(--branco); color: var(--celeste-escuro); border: none; font-size: 15px; }
   .vazio .camisa { background: rgba(255,255,255,.15); border: 2px dashed var(--branco); color: var(--branco); font-size: 22px; }
-  .camisa .ovr { background: var(--branco); border-radius: 6px; padding: 0 4px; }
   .nome { font-size: 12px; font-weight: 700; background: rgba(0,0,0,.55); border-radius: 6px; padding: 2px 6px; max-width: 100%;
           text-align: center; line-height: 1.2; overflow-wrap: anywhere;
           display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -66,11 +73,13 @@
   .banco .slot { position: static; transform: none; width: auto; }
   .status { text-align: center; font-size: 12px; color: var(--suave); margin-top: 16px; }
   /* janelas */
-  .fundo-modal { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 10; }
+  .fundo-modal { position: fixed; inset: 0; background: rgba(0,0,0,.65); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 10; }
   .fundo-modal.aberto { display: flex; }
-  .modal { background: var(--painel); border-radius: 14px; padding: 20px; width: 100%; max-width: 360px; border: 1px solid #24425f; }
+  .modal { background: var(--painel); border-radius: 14px; padding: 20px; width: 100%; max-width: 380px; border: 1px solid #24425f;
+           max-height: calc(100vh - 32px); overflow-y: auto; }
   .modal h3 { margin: 0 0 4px; }
   .modal p { margin: 0 0 14px; color: var(--suave); font-size: 14px; }
+  .modal p:empty { display: none; }
   label { display: block; font-size: 13px; color: var(--suave); margin: 10px 0 4px; }
   input { width: 100%; font: inherit; padding: 10px 12px; border-radius: 8px; border: 1px solid #2c4d6d; background: #0d1b2a; color: var(--texto); }
   .acoes { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
@@ -78,7 +87,38 @@
   .btn.prim { background: var(--celeste); color: #0d1b2a; }
   .btn.sec { background: #24425f; color: var(--texto); }
   .btn.perigo { background: #7a2630; color: #fff; }
-  .erro { color: #ff8a8a; font-size: 13px; margin-top: 8px; min-height: 1em; }
+  /* resultados da busca */
+  .resultados { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .res { display: flex; align-items: center; gap: 10px; text-align: left; width: 100%; background: #0d1b2a; color: var(--texto);
+         border: 1px solid #24425f; border-radius: 10px; padding: 6px 10px; }
+  .res:hover, .res:focus { border-color: var(--celeste); outline: none; }
+  .res img.f { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; object-position: top; background: #24425f; }
+  .res .info { flex: 1; min-width: 0; }
+  .res .n { font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .res .c { font-size: 12px; color: var(--suave); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .res .o { font-weight: 800; font-size: 18px; color: var(--ouro1); text-align: right; line-height: 1; }
+  .res .o small { display: block; font-size: 10px; color: var(--suave); font-weight: 600; }
+  .dica { font-size: 13px; color: var(--suave); text-align: center; padding: 8px 0; }
+  /* carta */
+  .carta {
+    position: relative; width: 230px; margin: 4px auto 0; aspect-ratio: 0.72; padding: 16px 16px 14px;
+    background: linear-gradient(160deg, var(--ouro1) 0%, #e8c96f 45%, var(--ouro2) 100%);
+    clip-path: polygon(50% 0, 100% 6%, 100% 88%, 50% 100%, 0 88%, 0 6%);
+    color: var(--ouro-texto); display: flex; flex-direction: column; align-items: center;
+  }
+  .carta .topo { position: absolute; left: 20px; top: 26px; display: flex; flex-direction: column; align-items: center; line-height: 1; z-index: 1; }
+  .carta .topo b { font-size: 38px; font-weight: 800; }
+  .carta .topo span { font-size: 15px; font-weight: 700; margin-top: 2px; }
+  .carta .topo img { width: 26px; margin-top: 6px; }
+  .carta .rosto { width: 150px; height: 150px; object-fit: cover; object-position: top; margin-top: 8px; margin-left: 30px; }
+  .carta .nm { font-weight: 800; font-size: 19px; margin-top: 2px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .carta .linha-st { width: 80%; border-top: 1px solid rgba(59,42,7,.35); margin: 4px 0; }
+  .carta .stats { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; width: 100%; text-align: center; }
+  .carta .stats div { font-size: 10px; font-weight: 600; }
+  .carta .stats b { display: block; font-size: 15px; font-weight: 800; }
+  .carta .base { display: flex; gap: 10px; align-items: center; margin-top: 6px; }
+  .carta .base img { height: 20px; }
+  .carta-legenda { text-align: center; font-size: 13px; color: var(--suave); margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -117,15 +157,22 @@
   <div class="modal">
     <h3 id="mTitulo">Posição</h3>
     <p id="mInfo"></p>
-    <label for="inJogador">Nome do jogador</label>
-    <input id="inJogador" maxlength="40" placeholder="Ex.: Maravilla Martínez">
-    <label for="inOvr">Overall no FIFA 27 (opcional)</label>
-    <input id="inOvr" type="number" min="1" max="99" inputmode="numeric" placeholder="Ex.: 78">
-    <div class="erro" id="erro"></div>
-    <div class="acoes">
-      <button class="btn sec" id="cancelar">Cancelar</button>
-      <button class="btn perigo" id="limpar">Remover</button>
-      <button class="btn prim" id="salvar">Salvar</button>
+
+    <div id="vCarta" hidden>
+      <div id="cartaBox"></div>
+      <div class="carta-legenda" id="cartaLegenda"></div>
+      <div class="acoes">
+        <button class="btn sec" id="voltar">Voltar</button>
+        <button class="btn perigo" id="limpar">Remover</button>
+        <button class="btn prim" id="principal">Escalar</button>
+      </div>
+    </div>
+
+    <div id="vBusca">
+      <label for="inBusca">Buscar jogador no FIFA 27 (qualquer time)</label>
+      <input id="inBusca" maxlength="40" placeholder="Ex.: Martínez, Messi, Rojas…" autocomplete="off">
+      <div class="resultados" id="resultados"><div class="dica">Digite pelo menos 2 letras.</div></div>
+      <div class="acoes"><button class="btn sec" id="cancelar">Cancelar</button></div>
     </div>
   </div>
 </div>
@@ -135,6 +182,7 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm';
 
 const db = createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+const BUSCA_URL = window.SUPABASE_URL + '/functions/v1/jogadores?q=';
 
 // Posições no campo (x, y em % — ataque para cima)
 const LAYOUT = {
@@ -148,7 +196,7 @@ const NOMES_POS = { GOL: 'Goleiro', ZAG: 'Zagueiro', 'ALA E': 'Ala esquerdo', 'A
                     MEI: 'Meia armador', VOL: 'Volante', ATA: 'Atacante', RES: 'Reserva' };
 
 let slots = {};
-let atual = null;
+let atual = null; // posição aberta
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -167,13 +215,19 @@ $('trocarNome').onclick = abrirNome;
 if (eu) setEu(eu); else abrirNome();
 
 function htmlSlot(s) {
-  const cheio = !!s.player;
-  const sobrenome = cheio ? s.player : 'Escolher';
-  return `
-    <span class="camisa">${cheio ? (s.overall ? `<span class="ovr">${s.overall}</span>` : '') : '+'}</span>
-    <span class="nome">${esc(sobrenome)}</span>
+  const c = s.card;
+  let camisa;
+  if (c && c.photo) {
+    camisa = `<span class="camisa foto"><img src="${esc(c.photo)}" alt="" loading="lazy"><span class="ovr">${esc(c.ovr)}</span></span>`;
+  } else if (s.player) {
+    camisa = `<span class="camisa">${s.overall ? `<span class="ovr">${s.overall}</span>` : ''}</span>`;
+  } else {
+    camisa = `<span class="camisa">+</span>`;
+  }
+  return `${camisa}
+    <span class="nome">${esc(s.player ? (c?.short || s.player) : 'Escolher')}</span>
     <span class="pos">${esc(s.label)}</span>
-    ${cheio && s.picked_by ? `<span class="por">por ${esc(s.picked_by)}</span>` : ''}`;
+    ${s.player && s.picked_by ? `<span class="por">por ${esc(s.picked_by)}</span>` : ''}`;
 }
 
 function render() {
@@ -200,40 +254,98 @@ function render() {
     .map(([p, n]) => `<span class="chip">${esc(p)}: <b>${n}</b></span>`).join('');
 }
 
+function htmlCarta(c) {
+  return `<div class="carta">
+    <div class="topo"><b>${esc(c.ovr)}</b><span>${esc(c.pos)}</span>
+      ${c.nationImg ? `<img src="${esc(c.nationImg)}" alt="${esc(c.nation)}">` : ''}</div>
+    <img class="rosto" src="${esc(c.photo)}" alt="${esc(c.name)}">
+    <div class="nm">${esc(c.short)}</div>
+    <div class="linha-st"></div>
+    <div class="stats">${(c.stats || []).map(([k, v]) => `<div><b>${v ?? '–'}</b>${esc(k)}</div>`).join('')}</div>
+    <div class="base">${c.clubImg ? `<img src="${esc(c.clubImg)}" alt="${esc(c.club)}">` : ''}</div>
+  </div>`;
+}
+
+// Mostra a carta: modo 'novo' (confirmar escolha) ou 'atual' (jogador já escalado)
+function mostrarCarta(c, modo) {
+  $('vBusca').hidden = true;
+  $('vCarta').hidden = false;
+  $('mInfo').textContent = '';
+  $('cartaBox').innerHTML = c ? htmlCarta(c) : '';
+  const quem = atual.picked_by ? ` · escolhido por ${atual.picked_by}` : '';
+  $('cartaLegenda').textContent = c
+    ? `${c.name} · ${c.club || ''}${modo === 'atual' ? quem : ''}`
+    : `${atual.player}${quem}`;
+  $('limpar').style.display = modo === 'atual' ? '' : 'none';
+  $('principal').textContent = modo === 'atual' ? 'Trocar' : 'Escalar';
+  $('voltar').textContent = modo === 'atual' ? 'Fechar' : 'Voltar';
+  $('principal').onclick = modo === 'atual'
+    ? mostrarBusca
+    : () => gravar({ player: c.name, overall: c.ovr, card: c, picked_by: eu });
+  $('voltar').onclick = modo === 'atual' ? fechar : mostrarBusca;
+}
+
+function mostrarBusca() {
+  $('vCarta').hidden = true;
+  $('vBusca').hidden = false;
+  $('mInfo').textContent = 'Busque o jogador pelo nome.';
+  $('inBusca').focus();
+}
+
 function abrirSlot(id) {
   if (!eu) return abrirNome();
   atual = slots[id];
   $('mTitulo').textContent = NOMES_POS[atual.label] || atual.label;
-  $('mInfo').textContent = atual.player
-    ? `Atual: ${atual.player}${atual.picked_by ? ' (escolhido por ' + atual.picked_by + ')' : ''}`
-    : 'Posição livre.';
-  $('inJogador').value = atual.player || '';
-  $('inOvr').value = atual.overall || '';
-  $('limpar').style.display = atual.player ? '' : 'none';
-  $('erro').textContent = '';
+  $('inBusca').value = '';
+  $('resultados').innerHTML = '<div class="dica">Digite pelo menos 2 letras.</div>';
   $('mSlot').classList.add('aberto');
-  $('inJogador').focus();
+  if (atual.player) mostrarCarta(atual.card, 'atual'); else mostrarBusca();
 }
 function fechar() { $('mSlot').classList.remove('aberto'); atual = null; }
 $('cancelar').onclick = fechar;
 $('mSlot').onclick = (e) => { if (e.target.id === 'mSlot') fechar(); };
 
+let timer = null, ultimaBusca = 0;
+$('inBusca').oninput = () => {
+  clearTimeout(timer);
+  const q = $('inBusca').value.trim();
+  if (q.length < 2) { $('resultados').innerHTML = '<div class="dica">Digite pelo menos 2 letras.</div>'; return; }
+  $('resultados').innerHTML = '<div class="dica">Buscando…</div>';
+  timer = setTimeout(() => buscar(q), 350);
+};
+async function buscar(q) {
+  const n = ++ultimaBusca;
+  try {
+    const r = await fetch(BUSCA_URL + encodeURIComponent(q));
+    const lista = await r.json();
+    if (n !== ultimaBusca) return;
+    if (!Array.isArray(lista) || !lista.length) {
+      $('resultados').innerHTML = '<div class="dica">Nenhum jogador encontrado. Tente o sobrenome.</div>';
+      return;
+    }
+    $('resultados').innerHTML = '';
+    for (const c of lista) {
+      const b = document.createElement('button');
+      b.className = 'res';
+      b.innerHTML = `<img class="f" src="${esc(c.photo)}" alt="" loading="lazy">
+        <span class="info"><div class="n">${esc(c.name)}</div><div class="c">${esc(c.club || '')} · ${esc(c.pos)}</div></span>
+        <span class="o">${esc(c.ovr)}<small>OVR</small></span>`;
+      b.onclick = () => mostrarCarta(c, 'novo');
+      $('resultados').appendChild(b);
+    }
+  } catch {
+    if (n === ultimaBusca) $('resultados').innerHTML = '<div class="dica">Busca indisponível agora. Tente de novo.</div>';
+  }
+}
+
 async function gravar(dados) {
-  $('erro').textContent = '';
   const { data, error } = await db.from('slots')
     .update({ ...dados, updated_at: new Date().toISOString() })
     .eq('id', atual.id).select().single();
-  if (error) { $('erro').textContent = 'Não consegui salvar. Tente de novo.'; return; }
+  if (error) { $('cartaLegenda').textContent = 'Não consegui salvar. Tente de novo.'; return; }
   slots[data.id] = data; render(); fechar();
 }
-$('salvar').onclick = () => {
-  const player = $('inJogador').value.trim();
-  if (!player) { $('erro').textContent = 'Digite o nome do jogador.'; return; }
-  const o = parseInt($('inOvr').value, 10);
-  gravar({ player, overall: o >= 1 && o <= 99 ? o : null, picked_by: eu });
-};
-$('inJogador').onkeydown = (e) => { if (e.key === 'Enter') $('salvar').click(); };
-$('limpar').onclick = () => gravar({ player: null, overall: null, picked_by: null });
+$('limpar').onclick = () => gravar({ player: null, overall: null, card: null, picked_by: null });
 
 async function carregar() {
   const { data, error } = await db.from('slots').select('*');
