@@ -28,6 +28,7 @@ def get(tid, label):
                     'photo': p.get('avatarUrl'), 'club': (p.get('team') or {}).get('label'),
                     'clubImg': (p.get('team') or {}).get('imageUrl'),
                     'nation': (p.get('nationality') or {}).get('label'), 'nationImg': (p.get('nationality') or {}).get('imageUrl'),
+                    'dob': p.get('birthdate'),
                     'stats': [[l, (st.get(k) or {}).get('value')] for k, l in zip(ks, ls)],
                 })
             return tid, label, out

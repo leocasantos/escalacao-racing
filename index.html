@@ -111,6 +111,8 @@
   .carta .topo span { font-size: 15px; font-weight: 700; margin-top: 2px; }
   .carta .topo img { width: 26px; margin-top: 6px; }
   .carta .rosto { width: 150px; height: 150px; object-fit: cover; object-position: top; margin-top: 8px; margin-left: 30px; }
+  .carta .rosto.wiki { width: 128px; height: 128px; margin: 18px 0 6px 30px; border-radius: 50%; object-position: center 20%;
+                       border: 3px solid rgba(59,42,7,.35); }
   .carta .nm { font-weight: 800; font-size: 19px; margin-top: 2px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
   .carta .linha-st { width: 80%; border-top: 1px solid rgba(59,42,7,.35); margin: 4px 0; }
   .carta .stats { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; width: 100%; text-align: center; }
@@ -260,7 +262,7 @@ function htmlCarta(c) {
   return `<div class="carta">
     <div class="topo"><b>${esc(c.ovr)}</b><span>${esc(c.pos)}</span>
       ${c.nationImg ? `<img src="${esc(c.nationImg)}" alt="${esc(c.nation)}">` : ''}</div>
-    <img class="rosto" src="${esc(c.photo)}" alt="${esc(c.name)}" onerror="semFoto(this)">
+    <img class="rosto${c.fotoWiki ? ' wiki' : ''}" src="${esc(c.photo)}" alt="${esc(c.name)}" onerror="semFoto(this)">
     <div class="nm">${esc(c.short)}</div>
     <div class="linha-st"></div>
     <div class="stats">${(c.stats || []).map(([k, v]) => `<div><b>${v ?? '–'}</b>${esc(k)}</div>`).join('')}</div>
