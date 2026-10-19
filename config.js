@@ -1,0 +1,2 @@
+window.SUPABASE_URL = "https://oilsfgandqulqfxznhpo.supabase.co";
+window.SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pbHNmZ2FuZHF1bHFmeHpuaHBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI0MTcyNjcsImV4cCI6MjEwNzk5MzI2N30.UQLamcAvvKvrAfxEVCvI8exn36mhbazNlh8rQSvk5HQ";
