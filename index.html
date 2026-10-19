@@ -197,6 +197,9 @@ const NOMES_POS = { GOL: 'Goleiro', ZAG: 'Zagueiro', 'ALA E': 'Ala esquerdo', 'A
 let slots = {};
 let atual = null; // posição aberta
 const $ = (id) => document.getElementById(id);
+// Silhueta para jogadores sem foto no site da EA
+const SILHUETA = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="38" r="20" fill="#7d8a96"/><path d="M14 100c0-22 16-36 36-36s36 14 36 36z" fill="#7d8a96"/></svg>');
+window.semFoto = (img) => { img.onerror = null; img.src = SILHUETA; };
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 function getEu() { try { return localStorage.getItem('racing-nome') || ''; } catch { return ''; } }
@@ -217,7 +220,7 @@ function htmlSlot(s) {
   const c = s.card;
   let camisa;
   if (c && c.photo) {
-    camisa = `<span class="camisa foto"><img src="${esc(c.photo)}" alt="" loading="lazy"><span class="ovr">${esc(c.ovr)}</span></span>`;
+    camisa = `<span class="camisa foto"><img src="${esc(c.photo)}" alt="" loading="lazy" onerror="semFoto(this)"><span class="ovr">${esc(c.ovr)}</span></span>`;
   } else if (s.player) {
     camisa = `<span class="camisa">${s.overall ? `<span class="ovr">${s.overall}</span>` : ''}</span>`;
   } else {
@@ -257,7 +260,7 @@ function htmlCarta(c) {
   return `<div class="carta">
     <div class="topo"><b>${esc(c.ovr)}</b><span>${esc(c.pos)}</span>
       ${c.nationImg ? `<img src="${esc(c.nationImg)}" alt="${esc(c.nation)}">` : ''}</div>
-    <img class="rosto" src="${esc(c.photo)}" alt="${esc(c.name)}">
+    <img class="rosto" src="${esc(c.photo)}" alt="${esc(c.name)}" onerror="semFoto(this)">
     <div class="nm">${esc(c.short)}</div>
     <div class="linha-st"></div>
     <div class="stats">${(c.stats || []).map(([k, v]) => `<div><b>${v ?? '–'}</b>${esc(k)}</div>`).join('')}</div>
@@ -330,7 +333,7 @@ async function buscar(q) {
     for (const c of lista) {
       const b = document.createElement('button');
       b.className = 'res';
-      b.innerHTML = `<img class="f" src="${esc(c.photo)}" alt="" loading="lazy">
+      b.innerHTML = `<img class="f" src="${esc(c.photo)}" alt="" loading="lazy" onerror="semFoto(this)">
         <span class="info"><div class="n">${esc(c.name)}</div><div class="c">${esc(c.club || '')} · ${esc(c.pos)}</div></span>
         <span class="o">${esc(c.ovr)}<small>OVR</small></span>`;
       b.onclick = () => mostrarCarta(c, 'novo');
