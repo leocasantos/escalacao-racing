@@ -182,7 +182,6 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm';
 
 const db = createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
-const BUSCA_URL = window.SUPABASE_URL + '/functions/v1/jogadores?q=';
 
 // Posições no campo (x, y em % — ataque para cima)
 const LAYOUT = {
@@ -316,8 +315,12 @@ $('inBusca').oninput = () => {
 async function buscar(q) {
   const n = ++ultimaBusca;
   try {
-    const r = await fetch(BUSCA_URL + encodeURIComponent(q));
-    const lista = await r.json();
+    const palavras = q.normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().split(/\s+/).filter(Boolean);
+    let consulta = db.from('players').select('data');
+    for (const p of palavras) consulta = consulta.ilike('busca', `%${p.replace(/[%_]/g, '')}%`);
+    const { data: linhas, error } = await consulta.order('ovr', { ascending: false }).limit(20);
+    if (error) throw error;
+    const lista = linhas.map(l => l.data);
     if (n !== ultimaBusca) return;
     if (!Array.isArray(lista) || !lista.length) {
       $('resultados').innerHTML = '<div class="dica">Nenhum jogador encontrado. Tente o sobrenome.</div>';
