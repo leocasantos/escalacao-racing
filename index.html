@@ -69,7 +69,7 @@
   .pos { font-size: 10px; font-weight: 600; opacity: .9; }
   .por { font-size: 10px; color: #d6ecff; opacity: .9; }
   h2 { font-size: 16px; margin: 22px 0 10px; }
-  .banco { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background: var(--painel); border-radius: 12px; padding: 12px 6px; }
+  .banco { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; background: var(--painel); border-radius: 12px; padding: 12px 6px; }
   .banco .slot { position: static; transform: none; width: auto; }
   .status { text-align: center; font-size: 12px; color: var(--suave); margin-top: 16px; }
   /* janelas */
@@ -131,7 +131,7 @@
 
 <div class="barra">
   <span class="chip">Você: <b id="eu">—</b> <button class="link" id="trocarNome">trocar</button></span>
-  <span class="chip">Escalados: <b id="total">0</b>/15</span>
+  <span class="chip">Escalados: <b id="total">0</b>/<span id="vagas">16</span></span>
 </div>
 <div class="barra" id="placar"></div>
 
@@ -252,6 +252,7 @@ function render() {
   }
   const cheios = lista.filter(s => s.player);
   $('total').textContent = cheios.length;
+  $('vagas').textContent = lista.length;
   const cont = {};
   cheios.forEach(s => { const p = s.picked_by || '?'; cont[p] = (cont[p] || 0) + 1; });
   $('placar').innerHTML = Object.entries(cont)
