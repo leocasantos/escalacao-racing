@@ -32,7 +32,7 @@
   .link { background: none; border: none; color: var(--celeste); text-decoration: underline; padding: 0; }
   main { max-width: 560px; margin: 0 auto; padding: 0 16px 40px; }
   .campo {
-    position: relative; width: min(100%, calc((100vh - 190px) * 0.68)); min-width: min(100%, 320px); margin: 0 auto; aspect-ratio: 68 / 100; border-radius: 14px; overflow: hidden;
+    position: relative; width: min(100%, calc((100vh - 190px) * 0.68)); min-width: min(100%, 350px); margin: 0 auto; aspect-ratio: 68 / 100; border-radius: 14px; overflow: hidden;
     background: repeating-linear-gradient(180deg, var(--grama1) 0 10%, var(--grama2) 10% 20%);
     border: 3px solid var(--linha); box-shadow: 0 10px 30px rgba(0,0,0,.4);
   }
@@ -44,7 +44,7 @@
   .peq-c { left: 37%; right: 37%; top: -2px; height: 6%; }
   .peq-b { left: 37%; right: 37%; bottom: -2px; height: 6%; }
   .slot {
-    position: absolute; transform: translate(-50%, -50%); width: 21%;
+    position: absolute; transform: translate(-50%, -50%); width: 24%;
     display: flex; flex-direction: column; align-items: center; gap: 3px;
     background: none; border: none; color: var(--branco); padding: 0;
   }
@@ -138,11 +138,11 @@ const db = createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
 
 // Posições no campo (x, y em % — ataque para cima)
 const LAYOUT = {
-  ate: [35, 13], atd: [65, 13],
-  mei: [50, 33],
-  ale: [11, 47], vle: [34, 56], vld: [66, 56], ald: [89, 47],
-  zge: [24, 74], zgc: [50, 77], zgd: [76, 74],
-  gk:  [50, 92],
+  ate: [33, 11], atd: [67, 11],
+  mei: [50, 28],
+  ale: [12, 44], vle: [34, 55], vld: [66, 55], ald: [88, 44],
+  zge: [20, 72], zgc: [50, 72], zgd: [80, 72],
+  gk:  [50, 89],
 };
 const NOMES_POS = { GOL: 'Goleiro', ZAG: 'Zagueiro', 'ALA E': 'Ala esquerdo', 'ALA D': 'Ala direito',
                     MEI: 'Meia armador', VOL: 'Volante', ATA: 'Atacante', RES: 'Reserva' };
